@@ -1,0 +1,133 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Microsoft Graph Send Mail",
+    "description": "K2 Swagger definition for Microsoft Graph sendMail"
+  },
+  "host": "graph.microsoft.com",
+  "basePath": "/v1.0",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/users/{userId}/sendMail": {
+      "post": {
+        "summary": "Send Email",
+        "description": "Sends an email using Microsoft Graph",
+        "operationId": "SendMail",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Sender mailbox"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/SendMailRequest"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "SendMailRequest": {
+      "type": "object",
+      "required": [
+        "message"
+      ],
+      "properties": {
+        "message": {
+          "$ref": "#/definitions/Message"
+        },
+        "saveToSentItems": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "Message": {
+      "type": "object",
+      "required": [
+        "subject",
+        "body",
+        "toRecipients"
+      ],
+      "properties": {
+        "subject": {
+          "type": "string"
+        },
+        "body": {
+          "$ref": "#/definitions/ItemBody"
+        },
+        "toRecipients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Recipient"
+          }
+        }
+      }
+    },
+    "ItemBody": {
+      "type": "object",
+      "required": [
+        "contentType",
+        "content"
+      ],
+      "properties": {
+        "contentType": {
+          "type": "string",
+          "enum": [
+            "Text",
+            "HTML"
+          ]
+        },
+        "content": {
+          "type": "string"
+        }
+      }
+    },
+    "Recipient": {
+      "type": "object",
+      "required": [
+        "emailAddress"
+      ],
+      "properties": {
+        "emailAddress": {
+          "$ref": "#/definitions/EmailAddress"
+        }
+      }
+    },
+    "EmailAddress": {
+      "type": "object",
+      "required": [
+        "address"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
